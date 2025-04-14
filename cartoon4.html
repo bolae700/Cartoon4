@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOLA | Snow Profile</title>
+    <style>
+        :root {
+            --sun-yellow: #FFD700;
+            --comic-blue: #00B4D8;
+            --cotton-pink: #FF85A2;
+            --paper-white: #FFF5E6;
+        }
+
+        body {
+            background: radial-gradient(circle, #B8E2F2 0%, #A1C4FD 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Bubblegum Sans', cursive;
+            margin: 0;
+        }
+
+        /* الأشكال العائمة الواضحة */
+        .vector-background {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .vector-shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            animation: vectorFloat 25s infinite linear;
+            filter: drop-shadow(0 0 8px white);
+            will-change: transform;
+        }
+
+        .vector-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+        }
+
+        .vector-square {
+            width: 120px;
+            height: 120px;
+            transform: rotate(15deg);
+        }
+
+        .vector-triangle {
+            width: 0;
+            height: 0;
+            border-left: 75px solid transparent;
+            border-right: 75px solid transparent;
+            border-bottom: 130px solid rgba(255,255,255,0.2);
+        }
+
+        @keyframes vectorFloat {
+            0% { transform: translate(-50%, -50%) scale(0.9) rotate(0deg); }
+            50% { transform: translate(100%, 100%) scale(1.1) rotate(180deg); }
+            100% { transform: translate(200%, 200%) scale(0.9) rotate(360deg); }
+        }
+
+        /* بقية الأنماط */
+        .cartoon-card {
+            background: var(--paper-white);
+            padding: 2rem;
+            border-radius: 30px;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.2);
+            position: relative;
+            max-width: 400px;
+            transform: rotate(-2deg);
+            transition: 0.3s;
+            z-index: 2;
+            margin: 20px;
+        }
+
+        .cartoon-card:hover {
+            transform: rotate(2deg) translateY(-10px);
+            box-shadow: 12px 12px 0 rgba(0,0,0,0.2);
+        }
+
+        .handdrawn-border {
+            position: absolute;
+            width: 105%;
+            height: 105%;
+            border: 4px dashed var(--sun-yellow);
+            border-radius: 35px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .avatar-cloud {
+            width: 180px;
+            height: 180px;
+            background: url('https://i.ibb.co/dPFpGv9/Default-Cute-anime-boy-pray-3d-art-cartoon-blue-1-30826f36-54b1-49e4-b141-5caad93c4a2c-0.jpg') center/cover;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            filter: drop-shadow(5px 5px 0 rgba(0,0,0,0.1));
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .snow-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .snow-particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            filter: drop-shadow(0 0 5px white);
+            animation: snow-fall 4s linear infinite;
+            will-change: transform;
+        }
+
+        @keyframes snow-fall {
+            0% { transform: translate(50px, -100px) rotate(0deg); opacity: 0.9; }
+            100% { transform: translate(-50px, 180px) rotate(360deg); opacity: 0.2; }
+        }
+
+        .info-comic {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .comic-title {
+            font-size: 2.5rem;
+            color: var(--comic-blue);
+            text-shadow: 3px 3px 0 var(--sun-yellow);
+            transform: skew(-5deg);
+            display: inline-block;
+        }
+
+        .speech-bubble {
+            background: white;
+            padding: 1rem;
+            border-radius: 20px;
+            border: 3px solid black;
+            clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 85%, 75% 100%, 50% 85%, 0 75%);
+            margin: 1rem 0;
+        }
+
+        .cartoon-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .bubble-btn {
+            background: var(--cotton-pink);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            filter: drop-shadow(3px 3px 0 rgba(0,0,0,0.1));
+        }
+
+        .bubble-btn:hover {
+            transform: scale(1.1) rotate(3deg);
+            background: var(--sun-yellow);
+        }
+
+        .bubble-btn::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: inherit;
+            transform: rotate(45deg);
+            bottom: -8px;
+            left: 50%;
+            margin-left: -10px;
+        }
+
+        .comic-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: var(--paper-white);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 90%;
+            opacity: 0;
+        }
+
+        .comic-modal.active {
+            transform: translate(-50%, -50%) scale(1) rotate(2deg);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--cotton-pink);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+            background: var(--sun-yellow);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(3px);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .cartoon-card {
+                padding: 1.5rem;
+                transform: rotate(0);
+                margin: 15px;
+            }
+            
+            .comic-title {
+                font-size: 2rem;
+            }
+            
+            .bubble-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="vector-background" id="vectorBg"></div>
+
+    <div class="cartoon-card">
+        <div class="handdrawn-border"></div>
+        
+        <div class="avatar-cloud">
+            <div class="snow-container" id="snowContainer"></div>
+        </div>
+
+        <div class="info-comic">
+            <h1 class="comic-title">BOLA EMAD</h1>
+            <div class="speech-bubble">
+                <p>🎮 Professional Gamer<br>📍 Texas, USA</p>
+            </div>
+        </div>
+
+        <div class="cartoon-buttons">
+            <button class="bubble-btn" onclick="showModal('team')">Dream Team</button>
+            <button class="bubble-btn" onclick="showModal('music')">8-Bit Music</button>
+        </div>
+    </div>
+
+    <div class="overlay" onclick="closeModal()"></div>
+
+    <div class="comic-modal" id="teamModal">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <h2 style="color: var(--comic-blue);">Dream Team</h2>
+        <ul style="list-style: none; padding: 0;">
+            <li>Mark</li>
+            <li>Dolly</li>
+            <li>Ramiz</li>
+            <li>Leader</li>
+        </ul>
+    </div>
+
+    <div class="comic-modal" id="musicModal">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <h2 style="color: var(--comic-blue);">8-Bit Music</h2>
+        <iframe 
+            width="100%" 
+            height="200" 
+            src="https://www.youtube.com/embed/LxWQjsW9oHI" 
+            frameborder="0" 
+            allowfullscreen
+            style="border-radius: 15px; margin-top: 1rem;">
+        </iframe>
+    </div>
+
+    <script>
+        // إنشاء الأشكال العائمة
+        function createVectorShapes() {
+            const container = document.getElementById('vectorBg');
+            
+            // دائرة
+            const circle = document.createElement('div');
+            circle.className = 'vector-shape vector-circle';
+            circle.style.cssText = 'left: 10%; top: 20%; animation-delay: 0s;';
+            
+            // مربع
+            const square = document.createElement('div');
+            square.className = 'vector-shape vector-square';
+            square.style.cssText = 'left: 70%; top: 60%; animation-delay: 5s;';
+            
+            // مثلث
+            const triangle = document.createElement('div');
+            triangle.className = 'vector-shape vector-triangle';
+            triangle.style.cssText = 'left: 30%; top: 80%; animation-delay: 10s;';
+            
+            container.append(circle, square, triangle);
+        }
+
+        // إدارة الثلج
+        function createSnow() {
+            const container = document.getElementById('snowContainer');
+            const maxParticles = 50;
+            
+            function createParticle() {
+                const snow = document.createElement('div');
+                snow.className = 'snow-particle';
+                
+                const size = Math.random() * 3 + 2;
+                const startX = Math.random() * 80 + 20;
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 2;
+
+                snow.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${startX}%;
+                    animation: snow-fall ${duration}s linear ${delay}s infinite;
+                    opacity: ${Math.random() * 0.3 + 0.7};
+                `;
+
+                container.appendChild(snow);
+            }
+
+            const observer = new MutationObserver(() => {
+                container.childNodes.forEach(node => {
+                    if(node.style.animationPlayState === 'finished') {
+                        node.remove();
+                        createParticle();
+                    }
+                });
+            });
+
+            for(let i = 0; i < maxParticles; i++) createParticle();
+            observer.observe(container, { childList: true });
+        }
+
+        // نوافذ منبثقة
+        function showModal(type) {
+            document.getElementById(`${type}Modal`).classList.add('active');
+            document.querySelector('.overlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.comic-modal').forEach(modal => {
+                modal.classList.remove('active');
+            });
+            document.querySelector('.overlay').classList.remove('active');
+        }
+
+        // بدء التشغيل
+        window.addEventListener('load', () => {
+            createVectorShapes();
+            createSnow();
+            
+            if(window.matchMedia("(max-width: 768px)").matches) {
+                document.querySelectorAll('.snow-particle').forEach(particle => {
+                    particle.style.animationDuration = '3s';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
